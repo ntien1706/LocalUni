@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0066ff",
+              "zalo": "#0068FF",
+              "background-light": "#f5f7f8",
+              "background-dark": "#0f1723",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Background Content (Simulating the underlying list page) -->
+<div class="fixed inset-0 z-0 overflow-y-auto p-4 md:p-10 opacity-40 grayscale pointer-events-none">
+<div class="max-w-5xl mx-auto space-y-6">
+<div class="h-12 w-48 bg-slate-300 rounded-lg"></div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="h-64 bg-slate-200 rounded-xl"></div>
+<div class="h-64 bg-slate-200 rounded-xl"></div>
+<div class="h-64 bg-slate-200 rounded-xl"></div>
+</div>
+</div>
+</div>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm">
+<!-- Modal Container -->
+<div class="relative w-full max-w-2xl max-h-[90vh] bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden flex flex-col">
+<!-- Close Button -->
+<button class="absolute top-4 right-4 z-20 size-10 flex items-center justify-center rounded-full bg-black/20 hover:bg-black/40 text-white transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+<!-- Scrollable Content Area -->
+<div class="overflow-y-auto hide-scrollbar">
+<!-- Hero Carousel Section -->
+<div class="relative w-full aspect-video group">
+<img class="w-full h-full object-cover" data-alt="Modern coffee shop interior with wooden furniture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTM-4vGDuAaTn0-lWmdXz7pEE6Ww3iqMjZR18EqbsueBEvwTNyxGnXN5gnLUD1VX9J0s0yoVOojQtsdCpmWxoIPdSnASYK-XqY5ns0hkqr-V2kiyJMfIG8sWWhO_fXDhLuA4XpaVhsRzx72wEl_2ji0FKkZES1bVefq_8ENqhafdir_nMpVhZq0FidNUSrv3QiudTLoCx-t3yEozbTchx9JOWpliEVkBoIq3AKSlMKE7rFrVpj50qfrm1gPVAjeAYvhdhkqTSDaz5t"/>
+<!-- Navigation Arrows -->
+<div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="size-10 rounded-full bg-white/80 dark:bg-slate-800/80 flex items-center justify-center shadow-lg text-primary">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="size-10 rounded-full bg-white/80 dark:bg-slate-800/80 flex items-center justify-center shadow-lg text-primary">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Carousel Dots -->
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+<div class="size-2 rounded-full bg-white shadow-sm"></div>
+<div class="size-2 rounded-full bg-white/50 shadow-sm"></div>
+<div class="size-2 rounded-full bg-white/50 shadow-sm"></div>
+</div>
+</div>
+<!-- Main Details -->
+<div class="p-6 space-y-6">
+<!-- Title & Basic Info -->
+<div>
+<div class="flex items-start justify-between">
+<h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">LocalUni Coffee &amp; Hub</h2>
+<div class="flex items-center gap-1 bg-yellow-100 dark:bg-yellow-900/30 px-3 py-1 rounded-full text-yellow-700 dark:text-yellow-400 font-bold text-sm">
+<span class="material-symbols-outlined !text-sm">star</span>
+<span>4.8</span>
+</div>
+</div>
+<div class="flex items-center mt-2 text-primary group cursor-pointer">
+<span class="material-symbols-outlined text-base mr-1">location_on</span>
+<span class="text-sm font-medium underline underline-offset-4">123 Đường Sư Vạn Hạnh, Quận 10, TP. HCM</span>
+<span class="material-symbols-outlined text-sm ml-1 opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
+</div>
+</div>
+<!-- Description -->
+<div class="space-y-2">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Mô tả</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm sm:text-base">
+                            LocalUni là điểm đến lý tưởng dành cho sinh viên và freelancer cần tìm một không gian làm việc tập trung. Quán được trang bị wifi 6 tốc độ cao, hệ thống ổ cắm điện tại mọi bàn và thực đơn đồ uống đa dạng từ cà phê đặc sản đến trà trái cây nhiệt đới.
+                        </p>
+</div>
+<!-- Amenities -->
+<div class="flex flex-wrap gap-3">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined !text-lg">wifi</span> Wifi miễn phí
+                        </div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined !text-lg">ac_unit</span> Máy lạnh
+                        </div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined !text-lg">power</span> Ổ cắm điện
+                        </div>
+</div>
+<!-- Reviews & Comments -->
+<div class="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Đánh giá &amp; Bình luận (124)</h3>
+<button class="text-sm font-bold text-primary">Xem tất cả</button>
+</div>
+<!-- Review List -->
+<div class="space-y-4">
+<!-- User 1 -->
+<div class="flex gap-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+<span class="text-primary font-bold">TH</span>
+</div>
+<div class="flex-1 space-y-1">
+<div class="flex items-center justify-between">
+<p class="text-sm font-bold">Trần Huy</p>
+<span class="text-xs text-slate-400">2 ngày trước</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 italic">"Không gian yên tĩnh tuyệt vời, cà phê đậm đà. Sẽ quay lại!"</p>
+</div>
+</div>
+<!-- User 2 -->
+<div class="flex gap-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+<span class="text-primary font-bold">AN</span>
+</div>
+<div class="flex-1 space-y-1">
+<div class="flex items-center justify-between">
+<p class="text-sm font-bold">An Nguyễn</p>
+<span class="text-xs text-slate-400">5 ngày trước</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 italic">"Wifi hơi chậm vào giờ cao điểm, nhưng chỗ ngồi rất thoải mái."</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Footer Action Buttons -->
+<div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-2 h-14 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-primary">call</span>
+<span class="text-sm sm:text-base">090 123 4567</span>
+</button>
+<button class="flex items-center justify-center gap-2 h-14 bg-zalo text-white rounded-xl font-bold transition-all hover:brightness-110 shadow-lg shadow-zalo/20">
+<div class="size-6 bg-white rounded-full flex items-center justify-center overflow-hidden">
+<span class="text-zalo text-[10px] font-black">Zalo</span>
+</div>
+<span class="text-sm sm:text-base">Nhắn tin Zalo</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html lang="vi" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LocalUni - Yêu thích</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0066ff",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1723",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full flex-col">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-4 md:px-10 py-3">
+<div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-3xl font-bold" style="">school</span>
+<h2 class="text-slate-900 dark:text-white text-xl font-extrabold tracking-tight" style="">LocalUni</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-semibold transition-colors" href="#" style="">Khám phá</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="#" style="">Yêu thích</a>
+
+</nav>
+</div>
+<div class="flex flex-1 justify-end items-center gap-4">
+<label class="hidden sm:flex items-center relative w-full max-w-xs" style="">
+<span class="material-symbols-outlined absolute left-3 text-slate-400" style="">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 placeholder:text-slate-500" placeholder="Tìm kiếm địa điểm..." type="text"/>
+</label>
+<button class="flex items-center justify-center p-1 rounded-full border-2 border-primary/20" style="">
+<div class="size-8 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Student user profile avatar image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_zoC3sqXXEtGFZ5C8LQVapyIw2yFUiBCU9e94JAvvuK2KrLmqNMW898SnmlZTTxARi2zN4__zf_HuZx9DMtkxriAIAr5PuFjME1q77HMMI_vAs1GJ1fY17rAaJ-VQ-iD74POMtIk8kBJkO1WqNisYlCAHl6XhMIbuMSKcwM7gZG20DgGKjwMjnsk8i4GH7oOEuow_BO6vP-giWOvWLR_yiot3-F-c0-9DJ5tTt9iTDg4uI4NavDdd_nzuU_C0FkPVkXcYUHRm7oJb" style=""/>
+</div>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto w-full px-4 md:px-10 py-8">
+<!-- Page Title & Header -->
+<div class="mb-8">
+<h1 class="text-slate-900 dark:text-white text-4xl font-extrabold tracking-tight mb-2" style="">Danh sách yêu thích</h1>
+<p class="text-slate-500 dark:text-slate-400 text-lg" style="">Quản lý các địa điểm và dịch vụ bạn đã lưu lại cho kỳ học này.</p>
+</div>
+<!-- Filters Section -->
+<div class="flex flex-wrap items-center gap-3 mb-10 overflow-x-auto pb-2">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white font-bold transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40" style="">
+<span class="material-symbols-outlined text-[20px]" style="">grid_view</span>
+                Tất cả
+            </button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold hover:border-primary hover:text-primary transition-all" style="">
+<span class="material-symbols-outlined text-[20px]" style="">restaurant</span>
+                Quán ăn
+            </button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold hover:border-primary hover:text-primary transition-all" style="">
+<span class="material-symbols-outlined text-[20px]" style="">home_work</span>
+                Phòng trọ
+            </button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold hover:border-primary hover:text-primary transition-all" style="">
+<span class="material-symbols-outlined text-[20px]" style="">local_laundry_service</span>
+                Dịch vụ
+            </button>
+</div>
+<!-- Favorites Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="group relative flex flex-col bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Traditional Vietnamese Bun Cha restaurant interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAosIxn72Ktbf2Ukxc32qu_vsJI2UQU2q2GfgSJg352Uf7pon_3zQNs6j4UYX96QO7QX7AFOUowTqaTlTFrxMfALZN80VKSJ1EODMTiVjKT3kcvg2miex0RdEwAsAgwe-8ihloxihvn3vXo8je43OtAbWikHMP2n7LQq53RdAV9sPfmF2DvN29Gu6vyP2CdzYCePVpLYAJx3JNJVZDu3yFhOIWjRpRBG4Bmt7YpJg4VwB3Z-o11kGWqIlciO2VBserqfzH7cv_BVee0" style=""/>
+<button class="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-slate-900/90 text-red-500 backdrop-blur-sm shadow-sm" style="">
+<span class="material-symbols-outlined fill text-2xl" style="">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 px-2 py-1 rounded bg-primary text-white text-[10px] font-bold uppercase tracking-wider" style="">Quán ăn</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg leading-tight" style="">Quán Bún Chả Sinh Từ</h3>
+<div class="flex items-center text-amber-500">
+<span class="material-symbols-outlined fill text-sm" style="">star</span>
+<span class="text-xs font-bold ml-1" style="">4.8</span>
+</div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-4" style="">Cách cổng trường 200m • 35k - 55k</p>
+<div class="flex items-center gap-2">
+<button class="flex-1 bg-primary/10 hover:bg-primary text-primary hover:text-white font-bold py-2 px-4 rounded transition-colors text-sm" style="">Xem chi tiết</button>
+<button class="p-2 bg-slate-100 dark:bg-slate-700 rounded text-slate-600 dark:text-slate-300" style="">
+<span class="material-symbols-outlined text-xl" style="">map</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group relative flex flex-col bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern student dormitory room interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGv268EcrTwfSzUUFIsQNBjcc4WrfyHpiVd1L7KVK0popPsuKHp-Qu4tK4O1o0DxtkN5an7BPWhqHSZpv3meXoD7Y7w7ZjicNN6AGPE12IxRjibcHqmtC3Y25JvOMTHCRWjBt6VAD8218hhmdb3Ltv2RW9ZJEDW7dSDeWKH-JPu7cF6yULOOAHNisQlfPhThKHvqYygzY86qpWDhHY0kJtcO3OrSD8cAgk1lLL72JtZkirNLOmMLN2DSM03m1JpH_1WqCD07umfJHx" style=""/>
+<button class="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-slate-900/90 text-red-500 backdrop-blur-sm shadow-sm" style="">
+<span class="material-symbols-outlined fill text-2xl" style="">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 px-2 py-1 rounded bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-wider" style="">Phòng trọ</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg leading-tight" style="">Ký túc xá chất lượng cao</h3>
+<div class="flex items-center text-amber-500">
+<span class="material-symbols-outlined fill text-sm" style="">star</span>
+<span class="text-xs font-bold ml-1" style="">4.5</span>
+</div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-4" style="">An ninh 24/7 • Full nội thất</p>
+<div class="flex items-center gap-2">
+<button class="flex-1 bg-primary/10 hover:bg-primary text-primary hover:text-white font-bold py-2 px-4 rounded transition-colors text-sm" style="">Xem chi tiết</button>
+<button class="p-2 bg-slate-100 dark:bg-slate-700 rounded text-slate-600 dark:text-slate-300" style="">
+<span class="material-symbols-outlined text-xl" style="">map</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group relative flex flex-col bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern self-service laundry shop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaDmPP_ceYJjkvBOWfuPPa1NDSc5TUAE3U470P7fPO-CJxkDtWqQ_35f9Tb4eUoF6rr-vV97Y7Qs64DgEds9YGPmB8W5VnLMSaKf8h6XW7LQClmwlu9xcOW5ywh5kdc35BJEU3R_9MoV0O9YyIkVyVtd4zT4n5ff4mlUjcRjcylODUmaUoZxOryyXQx6kN3kxKaTWYS8zr_ATRyIUV9sP-as8JG3m0L7cSmQp53K-a_6HhAqOd2bvz0EnEvmc09Yoj6OWW5HorIHuj" style=""/>
+<button class="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-slate-900/90 text-red-500 backdrop-blur-sm shadow-sm" style="">
+<span class="material-symbols-outlined fill text-2xl" style="">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 px-2 py-1 rounded bg-indigo-500 text-white text-[10px] font-bold uppercase tracking-wider" style="">Dịch vụ</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg leading-tight" style="">Tiệm Giặt Là Tự Động</h3>
+<div class="flex items-center text-amber-500">
+<span class="material-symbols-outlined fill text-sm" style="">star</span>
+<span class="text-xs font-bold ml-1" style="">4.9</span>
+</div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-4" style="">Sấy khô lấy ngay • Giá sinh viên</p>
+<div class="flex items-center gap-2">
+<button class="flex-1 bg-primary/10 hover:bg-primary text-primary hover:text-white font-bold py-2 px-4 rounded transition-colors text-sm" style="">Xem chi tiết</button>
+<button class="p-2 bg-slate-100 dark:bg-slate-700 rounded text-slate-600 dark:text-slate-300" style="">
+<span class="material-symbols-outlined text-xl" style="">map</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group relative flex flex-col bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cozy minimalist cafe for studying" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDz1OT11JwHNZZceTv9UqKXvwCrKVlRT9vhqhv9aiAYk1Eg7eSMlndrERdrntYcURd8JlMfC9zzcXT4--GJjEUNmZ3S_14ZazIl2FXLYv76e0V2qhyzUVCmEI5_k7S4i3nKbKXdcVKtgCxrooUjbOouV4_7hJIV4cXYz-1RTYSS8WKwtpo5PmMwpOFDQjPFDEizzBG0jfZ5qs1S_r83BylUD8198wdAwm5vRJ-u_QE_0jCKWvfd4RoguZb_N5shw_XWH_zaT0XeaiNd" style=""/>
+<button class="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-slate-900/90 text-red-500 backdrop-blur-sm shadow-sm" style="">
+<span class="material-symbols-outlined fill text-2xl" style="">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 px-2 py-1 rounded bg-orange-500 text-white text-[10px] font-bold uppercase tracking-wider" style="">Quán Cafe</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg leading-tight" style="">Quiet Corner Cafe</h3>
+<div class="flex items-center text-amber-500">
+<span class="material-symbols-outlined fill text-sm" style="">star</span>
+<span class="text-xs font-bold ml-1" style="">4.7</span>
+</div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-4" style="">Mở 24/7 • Có ổ cắm tại mỗi bàn</p>
+<div class="flex items-center gap-2">
+<button class="flex-1 bg-primary/10 hover:bg-primary text-primary hover:text-white font-bold py-2 px-4 rounded transition-colors text-sm" style="">Xem chi tiết</button>
+<button class="p-2 bg-slate-100 dark:bg-slate-700 rounded text-slate-600 dark:text-slate-300" style="">
+<span class="material-symbols-outlined text-xl" style="">map</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 5 (Example of non-filled heart for 'previously liked') -->
+<div class="group relative flex flex-col bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300 opacity-80">
+<div class="relative aspect-[4/3] overflow-hidden grayscale-[0.3]">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Traditional Japanese Ramen shop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8LOHmAwxzUIeT8Q-TXHjLdFzzXWGciglS_XrdZqlnPShGUUFGddPMZA2nJwmDV_4PkUmpYPVRRn3tStDdxVgTUAYbg3Utec3WpU2ifOHJqZhpF3Jhq5nQhAfCXB8Vr4CMJhMYghjWVY9BTPEPespnZC_7y6P4RfprWHFcnwvgvhNsO-fasR54VqsYRRKfs_mihQENi9bAU4uPX0CP9byImsVn_RnQXzGLuHbNH3bvUzUSW-elrim1q6YKNkJ-wL8K_h6p4caw3mrg" style=""/>
+<button class="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-slate-900/90 text-red-500 backdrop-blur-sm shadow-sm" style="">
+<span class="material-symbols-outlined fill text-2xl" style="">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 px-2 py-1 rounded bg-primary text-white text-[10px] font-bold uppercase tracking-wider" style="">Quán ăn</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-slate-900 dark:text-white font-bold text-lg leading-tight" style="">Mì Ramen Oishii</h3>
+<div class="flex items-center text-amber-500">
+<span class="material-symbols-outlined fill text-sm" style="">star</span>
+<span class="text-xs font-bold ml-1" style="">4.6</span>
+</div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-4" style="">Ưu đãi 10% cho thẻ SV</p>
+<div class="flex items-center gap-2">
+<button class="flex-1 bg-primary/10 hover:bg-primary text-primary hover:text-white font-bold py-2 px-4 rounded transition-colors text-sm" style="">Xem chi tiết</button>
+<button class="p-2 bg-slate-100 dark:bg-slate-700 rounded text-slate-600 dark:text-slate-300" style="">
+<span class="material-symbols-outlined text-xl" style="">map</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Empty State / Add New Placeholder -->
+<div class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex flex-col items-center justify-center p-8 text-center bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+<div class="size-16 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500 text-3xl" style="">add</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 font-semibold mb-1" style="">Thêm địa điểm mới</p>
+<p class="text-slate-400 dark:text-slate-500 text-xs" style="">Tìm kiếm và nhấn tim để lưu</p>
+</div>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-center gap-2 mt-16">
+<button class="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-primary hover:border-primary transition-all" style="">
+<span class="material-symbols-outlined" style="">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-lg bg-primary text-white font-bold" style="">1</button>
+<button class="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-primary hover:border-primary font-bold" style="">2</button>
+<button class="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-primary hover:border-primary font-bold" style="">3</button>
+<button class="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-primary hover:border-primary transition-all" style="">
+<span class="material-symbols-outlined" style="">chevron_right</span>
+</button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-10 py-12">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-8">
+<div class="flex flex-col gap-4 max-w-xs">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-2xl font-bold" style="">school</span>
+<h2 class="text-slate-900 dark:text-white text-lg font-extrabold" style="">LocalUni</h2>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm" style="">Nền tảng giúp sinh viên tìm kiếm phòng trọ, quán ăn và các dịch vụ quanh trường đại học nhanh chóng và tin cậy.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-8">
+<div class="flex flex-col gap-3">
+<h4 class="text-slate-900 dark:text-white font-bold text-sm" style="">Tính năng</h4>
+<a class="text-slate-500 dark:text-slate-400 text-sm hover:text-primary" href="#" style="">Khám phá</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm hover:text-primary" href="#" style="">Tìm phòng trọ</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm hover:text-primary" href="#" style="">Bản đồ tiện ích</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="text-slate-900 dark:text-white font-bold text-sm" style="">Hỗ trợ</h4>
+<a class="text-slate-500 dark:text-slate-400 text-sm hover:text-primary" href="#" style="">Trung tâm hỗ trợ</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm hover:text-primary" href="#" style="">Báo lỗi</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm hover:text-primary" href="#" style="">Liên hệ</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="text-slate-900 dark:text-white font-bold text-sm" style="">Hợp tác</h4>
+<a class="text-slate-500 dark:text-slate-400 text-sm hover:text-primary" href="#" style="">Dành cho chủ trọ</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm hover:text-primary" href="#" style="">Quảng cáo quán ăn</a>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+<p class="text-slate-400 text-xs" style="">© 2024 LocalUni. Mọi quyền được bảo lưu.</p>
+<div class="flex gap-4">
+<a class="text-slate-400 hover:text-primary transition-colors" href="#" style="">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="text-slate-400 hover:text-primary transition-colors" href="#" style="">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

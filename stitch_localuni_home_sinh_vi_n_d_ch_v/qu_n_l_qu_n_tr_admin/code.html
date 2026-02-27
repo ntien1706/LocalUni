@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0066ff",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1723",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined">location_city</span>
+</div>
+<div>
+<h1 class="text-lg font-bold tracking-tight">LocalUni</h1>
+<p class="text-xs text-slate-500 font-medium">Admin Dashboard</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium text-sm">Tổng quan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-medium text-sm">Quản lý Trường học</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-xl shadow-lg shadow-primary/20" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-medium text-sm">Quản lý Quán/Trọ</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium text-sm">Cài đặt</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div class="overflow-hidden">
+<p class="text-sm font-bold truncate">Admin User</p>
+<p class="text-xs text-slate-500 truncate">admin@localuni.vn</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto no-scrollbar bg-background-light dark:bg-background-dark p-8">
+<div class="max-w-6xl mx-auto space-y-8">
+<!-- Header Section -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">Quản lý Quán/Trọ</h2>
+<p class="text-slate-500 mt-1">Quản lý danh sách địa điểm và thông tin chi tiết các đơn vị liên kết.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[20px]">file_download</span> Xuất dữ liệu
+                        </button>
+</div>
+</div>
+<!-- Statistics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<p class="text-sm font-medium text-slate-500">Tổng số địa điểm</p>
+<p class="text-2xl font-bold mt-1">1,482</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="w-12 h-12 bg-emerald-500/10 rounded-full flex items-center justify-center text-emerald-500 mb-4">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<p class="text-sm font-medium text-slate-500">Quán ăn &amp; Dịch vụ</p>
+<p class="text-2xl font-bold mt-1">924</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="w-12 h-12 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-500 mb-4">
+<span class="material-symbols-outlined">home</span>
+</div>
+<p class="text-sm font-medium text-slate-500">Phòng trọ / KTX</p>
+<p class="text-2xl font-bold mt-1">558</p>
+</div>
+</div>
+<!-- Form Thêm Mới -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
+<h3 class="text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">add_circle</span> Thêm địa điểm mới
+                        </h3>
+</div>
+<form class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Left Column -->
+<div class="space-y-5">
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Tên quán/địa điểm</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all" placeholder="Nhập tên chính thức..." type="text"/>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Địa chỉ cụ thể</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all" placeholder="Số nhà, tên đường, quận/huyện..." type="text"/>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Link Google Maps</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-sm">link</span>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all" placeholder="https://goo.gl/maps/..." type="url"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Danh mục</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all">
+<option>Quán ăn</option>
+<option>Dịch vụ</option>
+<option>Phòng trọ</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Giá tham khảo</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all" placeholder="VD: 20k - 50k" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Số điện thoại</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all" placeholder="090..." type="tel"/>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Link Zalo</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all" placeholder="zalo.me/..." type="url"/>
+</div>
+</div>
+</div>
+<!-- Right Column -->
+<div class="space-y-5">
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Trường đại học liên kết</label>
+<div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 h-[120px] overflow-y-auto no-scrollbar space-y-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600" type="checkbox"/>
+<span class="text-sm group-hover:text-primary transition-colors">ĐH Bách Khoa</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600" type="checkbox"/>
+<span class="text-sm group-hover:text-primary transition-colors">ĐH Khoa Học Tự Nhiên</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600" type="checkbox"/>
+<span class="text-sm group-hover:text-primary transition-colors">ĐH Sư Phạm</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600" type="checkbox"/>
+<span class="text-sm group-hover:text-primary transition-colors">ĐH Kinh Tế - Luật</span>
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Mô tả chi tiết</label>
+<textarea class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 outline-none transition-all" placeholder="Giới thiệu về quán, các món nổi bật, giờ mở cửa..." rows="3"></textarea>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Hình ảnh (Gallery)</label>
+<div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-100 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors text-4xl mb-2">cloud_upload</span>
+<p class="text-sm font-medium text-slate-500">Kéo thả hoặc click để tải lên</p>
+<p class="text-xs text-slate-400 mt-1">Hỗ trợ JPG, PNG, WEBP (Tối đa 5MB)</p>
+</div>
+</div>
+</div>
+<div class="md:col-span-2 flex justify-end gap-4 border-t border-slate-100 dark:border-slate-800 pt-6">
+<button class="px-6 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-100 transition-all" type="reset">Làm lại</button>
+<button class="bg-primary text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-primary/25 hover:opacity-90 transition-all" type="submit">Lưu địa điểm</button>
+</div>
+</form>
+</div>
+<!-- Bảng Danh Sách -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+<h3 class="text-lg font-bold">Danh sách địa điểm</h3>
+<div class="relative w-72">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-sm">search</span>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/50" placeholder="Tìm kiếm địa điểm..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="text-left px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tên &amp; Địa chỉ</th>
+<th class="text-left px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Danh mục</th>
+<th class="text-left px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Trường liên kết</th>
+<th class="text-right px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Hành động</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="font-bold text-slate-900 dark:text-slate-100">Cơm tấm Phúc Lộc Thọ</div>
+<div class="text-xs text-slate-500 truncate max-w-xs">33 Dân Chủ, Phường Bình Thọ, Thủ Đức</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full">Quán ăn</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase">BK</span>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase">SPKT</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-blue-500 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-500 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="font-bold text-slate-900 dark:text-slate-100">Phòng Trọ Modern Home</div>
+<div class="text-xs text-slate-500 truncate max-w-xs">45/12 Đường số 8, Linh Trung</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-xs font-bold rounded-full">Phòng trọ</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase">KHTN</span>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase">UEL</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-blue-500 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-500 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="font-bold text-slate-900 dark:text-slate-100">Tiệm Photo XYZ</div>
+<div class="text-xs text-slate-500 truncate max-w-xs">Cổng B KTX Khu B, Dĩ An</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs font-bold rounded-full">Dịch vụ</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase">VNU</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-blue-500 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-500 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<p class="text-sm text-slate-500 font-medium">Hiển thị 10 trong số 1,482 địa điểm</p>
+<div class="flex gap-2">
+<button class="px-4 py-2 text-sm font-semibold border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50">Trước</button>
+<button class="px-4 py-2 text-sm font-semibold bg-primary text-white rounded-xl">Tiếp theo</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

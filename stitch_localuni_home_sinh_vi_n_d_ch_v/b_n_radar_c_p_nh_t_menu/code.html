@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LocalUni - Bản Đồ Radar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0066ff",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1723",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .radar-line {
+            transform-origin: center;
+        }
+        .glow-dot {
+            box-shadow: 0 0 15px #0066ff;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark px-6 py-3 lg:px-10 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 bg-primary/20 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">radar</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-[-0.015em]">LocalUni</h2>
+</div>
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Khám phá</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Yêu thích</a>
+
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="hidden sm:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-full h-full bg-slate-200 dark:bg-slate-800">
+<div class="text-slate-500 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full bg-transparent border-none focus:ring-0 text-sm px-3 placeholder:text-slate-500" placeholder="Tìm kiếm địa điểm..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+<div class="bg-primary/10 rounded-full p-0.5 border-2 border-primary">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Student profile avatar picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDSoxJWEYj0m_NI8O2UGKvMtyg1QQ_Jb0Ms3lgmJ0EYZwF1B-OG1g49raqZ6RIuRYmgqT8PhhhF6awxoRfrt6mYCU6sh_VE_CQA-40kHq-YIdaq1i0KmZWPGxVi6yTTi77rajBJLK-CybZCjWJ6tVLIJDgRozsl5GvjCQwBgZyXkTqQS3nnlLCzKi9JUBrp8AUbsbxGQW4bpI_x2jPgVmIzU_IUnHtJOPquDwlOmlVjC-5SsFUeWW_JaRpjCN2AZ-4QVRA43mBWwKcb");'></div>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden h-[calc(100vh-65px)]">
+<!-- Left Sidebar: Nearby Locations -->
+<aside class="w-80 lg:w-96 border-r border-slate-200 dark:border-slate-800 bg-background-light dark:bg-slate-900/50 flex flex-col hidden lg:flex">
+<div class="p-6">
+<h1 class="text-xl font-bold mb-1">Địa điểm lân cận</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Đang quét 2km xung quanh bạn</p>
+</div>
+<div class="px-6 flex gap-2 mb-6 overflow-x-auto no-scrollbar">
+<button class="px-4 py-2 rounded-full bg-primary text-white text-xs font-semibold whitespace-nowrap">Tất cả</button>
+<button class="px-4 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold whitespace-nowrap">Quán ăn</button>
+<button class="px-4 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold whitespace-nowrap">Thư viện</button>
+</div>
+<div class="flex-1 overflow-y-auto px-4 space-y-3 pb-6">
+<!-- Spot Card 1 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-primary transition-colors cursor-pointer group">
+<div class="flex gap-4">
+<div class="size-16 rounded-lg bg-cover bg-center shrink-0" data-alt="University coffee shop interior" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBegpAeZqRZKd2wFhW84PcoQvNHHfU5HxHf0tEauq8JSWQJHe-tzkVGXS7pRlXMiSFOUaH03sYfxkuu3gfoPREa1vzvOCXF72nGkqL8kCwckxlnN6Tl2QLHzd3apAunMo3n1nO_AAPj8ySQRkCy-BJ5nPq_fuWPTfpsH-IeuwUX0I_wcUtzfpvAqMuPM_5efCDSHD5PQ0HE4F49JdVa6JTRAT--_DFZHlwdSSP1x1eKa3mzeMmah9WOaIeJ1BhRubdkhv4h51j6I3wj");'></div>
+<div class="flex flex-col justify-center">
+<h3 class="font-bold text-sm group-hover:text-primary transition-colors">The Grad Coffee</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> 200m • Tòa C
+                                </p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-yellow-500 text-xs">star</span>
+<span class="text-xs font-medium">4.8</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Spot Card 2 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-primary transition-colors cursor-pointer group">
+<div class="flex gap-4">
+<div class="size-16 rounded-lg bg-cover bg-center shrink-0" data-alt="Modern library study area" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBRZ6vjD9P4KjTghKPR2aPaO0EvaOIkaUZtijsBRquHV_NEGC9vr9kMAUiVVh4qwuWNtdmPR7xbSIWE6J1j9PNM-vpxpKxeEL4bZ10uxxT9FCi_zegtzFlIFnVWFu6omFlIu2d45STY3MrLZcYSwtcKYnrdLs4Cmr5pk6dvHmJZpnHhA4xzwrkTUhexQn05EFXypljNsIA0uojvftpL0huMtW7yOj_zT2huqKLLAJzsgIilViE2kPvorlKJvgglgIM8mGWzlf7P4ZJX");'></div>
+<div class="flex flex-col justify-center">
+<h3 class="font-bold text-sm group-hover:text-primary transition-colors">Thư viện trung tâm</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> 450m • Tòa A1
+                                </p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-yellow-500 text-xs">star</span>
+<span class="text-xs font-medium">4.5</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Spot Card 3 -->
+<div class="p-4 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-primary transition-colors cursor-pointer group">
+<div class="flex gap-4">
+<div class="size-16 rounded-lg bg-cover bg-center shrink-0" data-alt="Student club meeting room" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD38T2wE_bdV8nHOXDzzXXz71_J5QlZIy_R_SMoDLicJ4Utglhu022yl9kfA9JhE0Ui74h2920QHhh9Kna4qXUkSWoPs8_Q4rdK8paP_F7UAsyDcyj8Rf8jhXqNvWssHKtTs8PcCKp-RW9HrfZg39voX0ANnROlusLdwiftC3gzi0wVU-UM2NMJ0vP74CMd51l3kxKwqgFY1xiR6MfPnRiNfL7PDl4slo1tpiCjSlZbBZR3AeIfgDFp577RUERMz9tGbGQaU515JHX-");'></div>
+<div class="flex flex-col justify-center">
+<h3 class="font-bold text-sm group-hover:text-primary transition-colors">CLB Âm Nhạc</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> 600m • Nhà Văn Hóa
+                                </p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-yellow-500 text-xs text-fill">star</span>
+<span class="text-xs font-medium">4.9</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content: Radar View -->
+<section class="flex-1 relative bg-slate-900 overflow-hidden flex flex-col items-center justify-center">
+<!-- Background Map Overlay -->
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, #334155 1px, transparent 0); background-size: 40px 40px;"></div>
+<!-- Radar Visualization Container -->
+<div class="relative size-[300px] sm:size-[500px] md:size-[600px] flex items-center justify-center">
+<!-- Concentric Circles -->
+<div class="absolute inset-0 border border-primary/20 rounded-full"></div>
+<div class="absolute inset-[15%] border border-primary/20 rounded-full"></div>
+<div class="absolute inset-[30%] border border-primary/20 rounded-full"></div>
+<div class="absolute inset-[45%] border border-primary/20 rounded-full"></div>
+<!-- Crosshair Lines -->
+<div class="absolute w-full h-px bg-primary/10"></div>
+<div class="absolute h-full w-px bg-primary/10"></div>
+<!-- Radar Sweep (Simulated via static gradient rotation for cleaner look) -->
+<div class="absolute inset-0 rounded-full bg-gradient-to-tr from-primary/30 to-transparent opacity-40"></div>
+<!-- Glowing Dots (Representing Spots) -->
+<!-- Dot 1 -->
+<div class="absolute top-[20%] left-[30%] group">
+<div class="size-4 bg-primary rounded-full glow-dot cursor-pointer transition-transform hover:scale-125"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">The Grad Coffee</div>
+</div>
+<!-- Dot 2 -->
+<div class="absolute top-[60%] right-[25%] group">
+<div class="size-4 bg-primary rounded-full glow-dot cursor-pointer transition-transform hover:scale-125"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Thư viện trung tâm</div>
+</div>
+<!-- Dot 3 -->
+<div class="absolute bottom-[20%] left-[45%] group">
+<div class="size-3 bg-white/60 rounded-full cursor-pointer transition-transform hover:scale-125 border border-primary"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">CLB Âm Nhạc</div>
+</div>
+<!-- Dot 4 -->
+<div class="absolute top-[40%] right-[40%] group">
+<div class="size-3 bg-white/60 rounded-full cursor-pointer transition-transform hover:scale-125 border border-primary"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Căng tin B4</div>
+</div>
+<!-- Center Marker (User) -->
+<div class="relative z-10 size-10 flex items-center justify-center">
+<div class="absolute inset-0 bg-primary/20 rounded-full"></div>
+<div class="size-4 bg-primary rounded-full border-2 border-white shadow-xl shadow-primary/50"></div>
+</div>
+</div>
+<!-- Floating Controls -->
+<div class="absolute bottom-8 right-8 flex flex-col gap-3">
+<button class="size-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="size-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="size-12 rounded-full bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/40 hover:scale-105 transition-all">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+<!-- Radar Scanner Status Label -->
+<div class="absolute top-8 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full">
+<div class="flex items-center gap-3">
+<div class="size-2 bg-green-500 rounded-full"></div>
+<span class="text-white text-sm font-medium tracking-wide uppercase">Hệ thống đang quét...</span>
+</div>
+</div>
+<!-- Mobile Header Overlay -->
+<div class="lg:hidden absolute top-4 left-4 right-4 flex justify-between items-center px-4">
+<h2 class="text-white font-bold text-lg">Radar Bản Đồ</h2>
+<button class="size-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer Mobile Nav -->
+<nav class="lg:hidden h-16 border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark flex justify-around items-center px-4">
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px]">Khám phá</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">radar</span>
+<span class="text-[10px] font-bold">Bản đồ</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-[10px]">Yêu thích</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined">menu</span>
+<span class="text-[10px]">Thêm</span>
+</button>
+</nav>
+</div>
+</body></html>
