@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const API_KEY = "AIzaSyBpqFlmK9QcB7nWc5fW4zgCLTRrect6FUQ";
+const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 // Calculate distance using Haversine formula
 const getDistance = (p1, p2) => {
