@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { auth, googleProvider } from '../firebase';
 import { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 export default function LoginModal({ onClose, onLogin }) {
     const [email, setEmail] = useState('');
@@ -25,9 +26,18 @@ export default function LoginModal({ onClose, onLogin }) {
             } else {
                 cred = await signInWithEmailAndPassword(auth, email, password);
             }
+            toast.success(isRegister ? "Đăng ký thành công!" : "Đăng nhập thành công!");
             onLogin(cred.user);
         } catch (error) {
-            alert("Lỗi đăng nhập: " + error.message);
+            if (error.code === 'auth/operation-not-allowed') {
+                toast.error("Phương thức đăng nhập này chưa được kích hoạt trong Firebase!");
+            } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                toast.error("Thông tin đăng nhập không chính xác!");
+            } else if (error.code === 'auth/email-already-in-use') {
+                toast.error("Tên email này đã được sử dụng!");
+            } else {
+                toast.error("Lỗi đăng nhập: " + error.message);
+            }
         }
         setLoading(false);
     };
@@ -35,9 +45,14 @@ export default function LoginModal({ onClose, onLogin }) {
     const handleGoogleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
+            toast.success("Đăng nhập Google thành công!");
             onLogin(result.user);
         } catch (error) {
-            alert("Lỗi đăng nhập Google: " + error.message);
+            if (error.code === 'auth/cancelled-popup-request' || error.code === 'auth/popup-closed-by-user') {
+                toast.error("Bạn đã hủy thao tác đăng nhập!");
+            } else {
+                toast.error("Lỗi đăng nhập Google: " + error.message);
+            }
         }
     };
 

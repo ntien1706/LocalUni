@@ -1,7 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Layout({ children, activeTab, setActiveTab, user, onOpenLogin, onLogout }) {
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return document.documentElement.classList.contains('dark') || window.localStorage.getItem('theme') === 'dark';
+        }
+        return false;
+    });
+
+    useEffect(() => {
+        if (isDarkMode) {
+            document.documentElement.classList.add('dark');
+            window.localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            window.localStorage.setItem('theme', 'light');
+        }
+    }, [isDarkMode]);
     return (
         <div className="relative flex min-h-screen w-full flex-col">
             <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-4 md:px-10 py-3">
@@ -54,6 +71,13 @@ export default function Layout({ children, activeTab, setActiveTab, user, onOpen
                                 className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 placeholder:text-slate-500"
                             />
                         </label>
+                        <button
+                            onClick={() => setIsDarkMode(!isDarkMode)}
+                            className="flex items-center justify-center p-1.5 rounded-full border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors"
+                            title="Toggle Theme"
+                        >
+                            <span className="material-symbols-outlined text-xl">{isDarkMode ? 'light_mode' : 'dark_mode'}</span>
+                        </button>
                         {user ? (
                             <button onClick={() => setShowLogoutConfirm(true)} className="flex items-center justify-center p-1 rounded-full border border-red-200 hover:bg-red-50 text-red-500 transition-colors tooltip" title="Đăng xuất">
                                 <div className="size-8 rounded-full flex items-center justify-center">

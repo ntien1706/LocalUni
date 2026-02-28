@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
 import { db } from '../firebase';
 import { doc, setDoc, deleteDoc } from 'firebase/firestore';
+import toast from 'react-hot-toast';
 
 export default function AdminPanel({ universities, allPlaces }) {
     const [activeTab, setActiveTab] = useState('places_form');
     const [newUni, setNewUni] = useState('');
-
-    const availableIcons = [
-        { id: 'wifi', label: 'Wifi' },
-        { id: 'ac_unit', label: 'Máy lạnh' },
-        { id: 'local_parking', label: 'Bãi đỗ xe' },
-        { id: 'restaurant', label: 'Ăn uống' },
-        { id: 'pets', label: 'Thú cưng' },
-        { id: 'electrical_services', label: 'Ổ điện' }
-    ];
 
     // Form states
     const [editingId, setEditingId] = useState(null);
@@ -41,8 +33,9 @@ export default function AdminPanel({ universities, allPlaces }) {
             try {
                 await setDoc(doc(db, "universities", uniName), { name: uniName });
                 setNewUni('');
+                toast.success(`Đã thêm trường ${uniName} thành công!`);
             } catch (error) {
-                alert("Lỗi thêm trường: " + error.message);
+                toast.error("Lỗi thêm trường: " + error.message);
             }
         }
     };
@@ -51,8 +44,9 @@ export default function AdminPanel({ universities, allPlaces }) {
         if (window.confirm("Xóa trường đại học này?")) {
             try {
                 await deleteDoc(doc(db, "universities", uni));
+                toast.success(`Đã xóa trường ${uni}`);
             } catch (error) {
-                alert("Lỗi xóa trường: " + error.message);
+                toast.error("Lỗi xóa trường: " + error.message);
             }
         }
     };
@@ -83,7 +77,7 @@ export default function AdminPanel({ universities, allPlaces }) {
 
     // --- Attributes logic ---
     const addAttribute = () => {
-        setAttributes([...attributes, { icon: 'wifi', text: 'Tính năng mới' }]);
+        setAttributes([...attributes, { name: 'Ví dụ: Điều hòa', description: '12000 BTU' }]);
     };
     const updateAttribute = (index, field, value) => {
         const newAttrs = [...attributes];
@@ -127,14 +121,14 @@ export default function AdminPanel({ universities, allPlaces }) {
 
         try {
             await setDoc(doc(db, "places", placeId), placeData);
-            alert(editingId ? "Cập nhật thông tin thành công!" : "Thêm địa điểm thành công!");
+            toast.success(editingId ? "Cập nhật thông tin thành công!" : "Thêm địa điểm thành công!");
             if (editingId) {
                 setActiveTab('manage_places');
             } else {
                 resetForm();
             }
         } catch (error) {
-            alert("Lỗi lưu dữ liệu: " + error.message);
+            toast.error("Lỗi lưu dữ liệu: (Missing Permissions?) " + error.message);
         }
         setLoading(false);
     };
@@ -175,7 +169,12 @@ export default function AdminPanel({ universities, allPlaces }) {
         setDescription(place.description || '');
         setPhone(place.phone || '');
         setMapsLink(place.mapsLink || '');
-        setAttributes(place.attributes || []);
+        // handle backward compatibility for old data struct (icon, text)
+        const mappedAttrs = (place.attributes || []).map(a => ({
+            name: a.name || a.icon || '',
+            description: a.description || a.text || ''
+        }));
+        setAttributes(mappedAttrs);
 
         setActiveTab('places_form');
     };
@@ -184,8 +183,9 @@ export default function AdminPanel({ universities, allPlaces }) {
         if (window.confirm("Bạn có chắc chắn muốn xóa địa điểm này không? Hành động không thể hoàn tác.")) {
             try {
                 await deleteDoc(doc(db, "places", id));
+                toast.success("Đã xóa địa điểm!");
             } catch (error) {
-                alert("Lỗi xóa địa điểm: " + error.message);
+                toast.error("Lỗi xóa địa điểm: " + error.message);
             }
         }
     };
@@ -431,7 +431,7 @@ export default function AdminPanel({ universities, allPlaces }) {
                         {/* Feature/Attributes Note Builder */}
                         <div>
                             <div className="flex justify-between items-end mb-3">
-                                <label className="block text-sm font-bold text-slate-700 dark:text-slate-300">Ghi chú & Tiện ích (Hiển thị trong Modal)</label>
+                                <label className="block text-sm font-bold text-slate-700 dark:text-slate-300">Ghi chú & Tiện ích (Cặp Tên - Mô tả)</label>
                                 <button type="button" onClick={addAttribute} className="text-xs bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
                                     <span className="material-symbols-outlined text-[14px]">add</span> Thêm tiện ích
                                 </button>
@@ -440,19 +440,19 @@ export default function AdminPanel({ universities, allPlaces }) {
                             <div className="space-y-3">
                                 {attributes.map((attr, idx) => (
                                     <div key={idx} className="flex gap-2">
-                                        <select
-                                            value={attr.icon}
-                                            onChange={(e) => updateAttribute(idx, 'icon', e.target.value)}
-                                            className="w-16 sm:w-32 px-2 sm:px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary outline-none text-slate-900 dark:text-white font-medium"
-                                        >
-                                            {availableIcons.map(ic => <option key={ic.id} value={ic.id}>{ic.label}</option>)}
-                                        </select>
                                         <input
                                             type="text"
-                                            value={attr.text}
-                                            onChange={e => updateAttribute(idx, 'text', e.target.value)}
+                                            value={attr.name}
+                                            onChange={(e) => updateAttribute(idx, 'name', e.target.value)}
+                                            className="w-1/3 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary outline-none text-slate-900 dark:text-white font-medium"
+                                            placeholder="Tên tiện ích (VD: Điều hòa)"
+                                        />
+                                        <input
+                                            type="text"
+                                            value={attr.description}
+                                            onChange={e => updateAttribute(idx, 'description', e.target.value)}
                                             className="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary outline-none text-slate-900 dark:text-white"
-                                            placeholder="Ghi chú (VD: Wifi miễn phí cực mạnh)"
+                                            placeholder="Mô tả chi tiết (VD: 12000 BTU, chạy 24/7)"
                                         />
                                         <button
                                             type="button"

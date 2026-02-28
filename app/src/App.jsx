@@ -8,6 +8,7 @@ import LoginModal from './components/LoginModal';
 import AdminPanel from './components/AdminPanel';
 import { db, auth } from './firebase';
 import { collection, onSnapshot, doc, setDoc } from 'firebase/firestore';
+import { Toaster } from 'react-hot-toast';
 
 function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
@@ -139,6 +140,7 @@ export default function App() {
 
   return (
     <>
+      <Toaster position="top-center" toastOptions={{ className: 'dark:bg-slate-800 dark:text-white' }} />
       <Layout
         activeTab={activeTab}
         setActiveTab={(tab) => { setActiveTab(tab); setRadarMode(false); }}
@@ -186,6 +188,7 @@ export default function App() {
         <DetailModal
           place={selectedPlace}
           onClose={() => setSelectedPlace(null)}
+          user={user}
         />
       )}
 
