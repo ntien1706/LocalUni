@@ -12,11 +12,12 @@
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .radar-line {
     animation: rotate 4s linear infinite;
     transform-origin: center;
@@ -29,11 +30,11 @@
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }
-  
+
   .material-symbols-outlined.fill {
     font-variation-settings: 'FILL' 1;
   }
-  
+
   .material-symbols-outlined.fill-1 {
     font-variation-settings: 'FILL' 1;
   }
@@ -43,7 +44,58 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Radar Animations */
+.radar-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(74, 222, 128, 0) 0%, rgba(74, 222, 128, 0) 270deg, rgba(74, 222, 128, 0.2) 340deg, rgba(74, 222, 128, 1) 360deg);
+  pointer-events: none;
+  z-index: 99;
+  animation: radar-sweep-anim 4s linear infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes radar-sweep-anim {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.radar-dot-wrapper {
+  transform: translate(0, -50%);
+  /* Center the dot vertically too for exact location */
+}
+
+@keyframes radar-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.9;
+    border-width: 3px;
+  }
+
+  10% {
+    transform: translate(-50%, -50%) scale(6);
+    opacity: 0;
+    border-width: 1px;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+.radar-dot-pulse {
+  animation: radar-pulse 4s infinite;
 }

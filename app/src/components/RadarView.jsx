@@ -28,7 +28,6 @@ const getAngle = (center, pt) => {
 export default function RadarView({ places, setSelectedPlace, setRadarMode }) {
     const [scriptLoaded, setScriptLoaded] = useState(false);
     const [radarCenter, setRadarCenter] = useState(null);
-    const [addressInput, setAddressInput] = useState('');
     const [loadingMsg, setLoadingMsg] = useState('');
 
     const [radarPlaces, setRadarPlaces] = useState([]);
@@ -112,32 +111,13 @@ export default function RadarView({ places, setSelectedPlace, setRadarMode }) {
                     processPlaces(center);
                 },
                 (err) => {
-                    alert('Lỗi định vị. Vui lòng thử nhập không gian địa chỉ bên dưới.');
+                    alert('Lỗi định vị. Trình duyệt của bạn đang chặn quyền truy cập vị trí.');
                     setLoadingMsg('');
                 }
             );
         } else {
             alert('Trình duyệt không hỗ trợ vị trí.');
         }
-    };
-
-    const handleSearchAddress = () => {
-        if (!addressInput) return;
-        setLoadingMsg('Đang phân tích tọa độ địa chỉ...');
-        const geocoder = new window.google.maps.Geocoder();
-        geocoder.geocode({ address: addressInput }, (results, status) => {
-            if (status === 'OK') {
-                const center = {
-                    lat: results[0].geometry.location.lat(),
-                    lng: results[0].geometry.location.lng()
-                };
-                setRadarCenter(center);
-                processPlaces(center);
-            } else {
-                alert("Không thể tìm thấy địa chỉ này.");
-                setLoadingMsg('');
-            }
-        });
     };
 
     // Initialize Map and Render Glowing Dots when radarPlaces updates
@@ -234,34 +214,11 @@ export default function RadarView({ places, setSelectedPlace, setRadarMode }) {
 
                         <button
                             onClick={handleUseCurrentLocation}
-                            className="w-full bg-green-500 hover:bg-green-600 text-slate-900 font-black py-4 px-6 rounded-2xl transition-all shadow-lg shadow-green-500/20 mb-6 flex items-center justify-center gap-2"
+                            className="w-full bg-green-500 hover:bg-green-600 text-slate-900 font-black py-4 px-6 rounded-2xl transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-2"
                         >
                             <span className="material-symbols-outlined">satellite_alt</span>
                             Sử dụng vị trí hiện tại
                         </button>
-
-                        <div className="flex items-center gap-4 mb-6">
-                            <div className="flex-1 h-px bg-slate-800"></div>
-                            <span className="text-slate-500 text-sm font-semibold">HOẶC</span>
-                            <div className="flex-1 h-px bg-slate-800"></div>
-                        </div>
-
-                        <div className="flex gap-2">
-                            <input
-                                type="text"
-                                value={addressInput}
-                                onChange={e => setAddressInput(e.target.value)}
-                                onKeyDown={e => e.key === 'Enter' && handleSearchAddress()}
-                                placeholder="Nhập địa chỉ nhà bạn..."
-                                className="flex-1 bg-slate-800 border border-slate-700 text-white px-5 py-4 rounded-2xl focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
-                            />
-                            <button
-                                onClick={handleSearchAddress}
-                                className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-green-500 font-bold px-6 py-4 rounded-2xl transition-all whitespace-nowrap"
-                            >
-                                Dò địa chỉ
-                            </button>
-                        </div>
                     </div>
                 ) : (
                     <div>
@@ -275,24 +232,24 @@ export default function RadarView({ places, setSelectedPlace, setRadarMode }) {
 
                         <div className="relative w-full aspect-square max-w-[600px] md:max-w-[700px] lg:max-w-[800px] mx-auto rounded-full overflow-hidden border-4 border-slate-800 shadow-[0_0_80px_rgba(0,255,128,0.1)] bg-slate-900 pointer-events-auto transform-gpu">
                             {/* The Map itself */}
-                            <div id="radar-map" className="w-full h-[150%] top-1/2 -translate-y-1/2 absolute inset-0 mix-blend-screen mix-blend-lighten" ref={mapRef}></div>
+                            <div id="radar-map" className="w-full h-[150%] top-1/2 -translate-y-1/2 absolute inset-0 mix-blend-screen mix-blend-lighten z-0" ref={mapRef}></div>
 
                             {/* Sweeping Conic Gradient */}
                             <div className="radar-sweep"></div>
 
                             {/* Grid Overlay to block out map edges and make it military */}
-                            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(2,7,18,0.7)_80%,rgba(2,7,18,0.95)_100%)] pointer-events-none z-[5]"></div>
+                            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(2,7,18,0.7)_80%,rgba(2,7,18,0.95)_100%)] pointer-events-none z-[80]"></div>
 
-                            <div className="absolute inset-0 rounded-full border border-green-500/30 shadow-[0_0_30px_rgba(0,255,128,0.2)_inset] pointer-events-none z-10"></div>
-                            <div className="absolute top-[16.6%] left-[16.6%] w-[66.6%] h-[66.6%] rounded-full border border-dashed border-green-500/20 pointer-events-none z-10"></div>
-                            <div className="absolute top-[33.3%] left-[33.3%] w-[33.3%] h-[33.3%] rounded-full border border-solid border-green-500/20 pointer-events-none z-10"></div>
+                            <div className="absolute inset-0 rounded-full border border-green-500/30 shadow-[0_0_30px_rgba(0,255,128,0.2)_inset] pointer-events-none z-[85]"></div>
+                            <div className="absolute top-[16.6%] left-[16.6%] w-[66.6%] h-[66.6%] rounded-full border border-dashed border-green-500/20 pointer-events-none z-[85]"></div>
+                            <div className="absolute top-[33.3%] left-[33.3%] w-[33.3%] h-[33.3%] rounded-full border border-solid border-green-500/20 pointer-events-none z-[85]"></div>
 
                             {/* Crosshairs */}
-                            <div className="absolute top-0 bottom-0 left-1/2 w-px bg-green-500/30 pointer-events-none z-10"></div>
-                            <div className="absolute top-1/2 left-0 right-0 h-px bg-green-500/30 pointer-events-none z-10"></div>
+                            <div className="absolute top-0 bottom-0 left-1/2 w-px bg-green-500/30 pointer-events-none z-[90]"></div>
+                            <div className="absolute top-1/2 left-0 right-0 h-px bg-green-500/30 pointer-events-none z-[90]"></div>
 
                             {/* Center Dot */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-3 bg-red-500 rounded-full shadow-[0_0_15px_red] z-[25] cursor-help tooltip" title="Tâm định vị"></div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-3 bg-red-500 rounded-full shadow-[0_0_15px_red] z-[100] cursor-help tooltip" title="Tâm định vị"></div>
                         </div>
                     </div>
                 )}
