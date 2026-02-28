@@ -6,8 +6,8 @@ import RadarView from './components/RadarView';
 import DetailModal from './components/DetailModal';
 import LoginModal from './components/LoginModal';
 import AdminPanel from './components/AdminPanel';
-import { db } from './firebase';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { db, auth } from './firebase';
+import { collection, onSnapshot, doc, setDoc } from 'firebase/firestore';
 
 function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
@@ -36,16 +36,32 @@ function useLocalStorage(key, initialValue) {
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [radarMode, setRadarMode] = useState(false);
-  const [favorites, setFavorites] = useLocalStorage('localuni_favorites', []);
-
+  const [favorites, setFavorites] = useState([]);
   const [allPlaces, setAllPlaces] = useState([]);
   const [universities, setUniversities] = useState([]);
-
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [isPicking, setIsPicking] = useState(false);
 
   // Auth state
   const [user, setUser] = useLocalStorage('localuni_user', null);
   const [showLogin, setShowLogin] = useState(false);
+
+  // Sync favorites with Firestore when user changes
+  useEffect(() => {
+    if (user?.uid || user?.email) {
+      const uid = user.uid || user.email;
+      const unsub = onSnapshot(doc(db, "favorites", uid), (docSnap) => {
+        if (docSnap.exists()) {
+          setFavorites(docSnap.data().list || []);
+        } else {
+          setFavorites([]);
+        }
+      });
+      return unsub;
+    } else {
+      setFavorites([]);
+    }
+  }, [user]);
 
   useEffect(() => {
     const unsubPlaces = onSnapshot(collection(db, "places"), (snapshot) => {
@@ -64,15 +80,24 @@ export default function App() {
     };
   }, []);
 
-  const toggleFavorite = (id) => {
-    if (favorites.includes(id)) {
-      setFavorites(favorites.filter(favId => favId !== id));
-    } else {
-      setFavorites([...favorites, id]);
+  const toggleFavorite = async (id) => {
+    if (!user) {
+      alert("Vui lòng đăng nhập để lưu quán yêu thích!");
+      setShowLogin(true);
+      return;
+    }
+    const newFavs = favorites.includes(id) ? favorites.filter(favId => favId !== id) : [...favorites, id];
+    const uid = user.uid || user.email;
+    try {
+      await setDoc(doc(db, "favorites", uid), { list: newFavs });
+    } catch (error) {
+      alert("Lỗi lưu yêu thích: " + error.message);
     }
   };
 
   const pickRandom = () => {
+    if (isPicking) return;
+
     let list = allPlaces;
     if (activeTab === 'favorites') {
       list = allPlaces.filter(p => favorites.includes(p.id));
@@ -82,14 +107,24 @@ export default function App() {
       return;
     }
 
-    const randomItem = list[Math.floor(Math.random() * list.length)];
-    setSelectedPlace(randomItem);
+    setIsPicking(true);
+
+    // Simulate spinning animation delay
+    setTimeout(() => {
+      const randomItem = list[Math.floor(Math.random() * list.length)];
+      setSelectedPlace(randomItem);
+      setIsPicking(false);
+    }, 1500);
   };
 
-  const handleLogin = (email) => {
-    setUser({ email, role: email === 'admin@localuni.com' ? 'admin' : 'user' });
+  const handleLogin = (userData) => {
+    setUser({
+      email: userData.email,
+      uid: userData.uid || userData.email,
+      role: userData.email === 'admin@localuni.com' ? 'admin' : 'user'
+    });
     setShowLogin(false);
-    if (email === 'admin@localuni.com') {
+    if (userData.email === 'admin@localuni.com') {
       setActiveTab('admin');
       setRadarMode(false);
     }
@@ -165,12 +200,13 @@ export default function App() {
       {!radarMode && activeTab !== 'admin' && (
         <button
           onClick={pickRandom}
-          className="fixed bottom-8 right-8 bg-primary text-white pl-5 pr-6 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3 z-40 group overflow-hidden"
+          disabled={isPicking}
+          className="fixed bottom-8 right-8 bg-primary text-white pl-5 pr-6 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3 z-40 group overflow-hidden disabled:opacity-80 disabled:cursor-not-allowed"
         >
-          <div className="bg-white/20 p-2 rounded-lg group-hover:rotate-[360deg] transition-transform duration-1000 ease-in-out">
+          <div className={`bg-white/20 p-2 rounded-lg transition-transform duration-1000 ease-in-out ${isPicking ? 'animate-spin' : 'group-hover:rotate-[360deg]'}`}>
             <span className="material-symbols-outlined text-2xl">casino</span>
           </div>
-          <span className="font-bold text-lg hidden sm:block">Chọn ngẫu nhiên!</span>
+          <span className="font-bold text-lg hidden sm:block">{isPicking ? 'Đang chọn...' : 'Chọn ngẫu nhiên!'}</span>
         </button>
       )}
     </>

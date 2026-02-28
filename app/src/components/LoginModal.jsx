@@ -13,18 +13,19 @@ export default function LoginModal({ onClose, onLogin }) {
 
         // Admin direct login bypass
         if (email === 'admin@localuni.com' && password === 'admin@localuni.password') {
-            onLogin(email);
+            onLogin({ email: email, uid: 'admin_uid_bypass' });
             return;
         }
 
         setLoading(true);
         try {
+            let cred;
             if (isRegister) {
-                await createUserWithEmailAndPassword(auth, email, password);
+                cred = await createUserWithEmailAndPassword(auth, email, password);
             } else {
-                await signInWithEmailAndPassword(auth, email, password);
+                cred = await signInWithEmailAndPassword(auth, email, password);
             }
-            onLogin(email);
+            onLogin(cred.user);
         } catch (error) {
             alert("Lỗi đăng nhập: " + error.message);
         }
@@ -34,7 +35,7 @@ export default function LoginModal({ onClose, onLogin }) {
     const handleGoogleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
-            onLogin(result.user.email);
+            onLogin(result.user);
         } catch (error) {
             alert("Lỗi đăng nhập Google: " + error.message);
         }
