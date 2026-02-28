@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import HomeView from './components/HomeView';
 import FavoritesView from './components/FavoritesView';
@@ -6,7 +6,8 @@ import RadarView from './components/RadarView';
 import DetailModal from './components/DetailModal';
 import LoginModal from './components/LoginModal';
 import AdminPanel from './components/AdminPanel';
-import { places as initialPlaces } from './data';
+import { db } from './firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
@@ -32,20 +33,36 @@ function useLocalStorage(key, initialValue) {
   return [storedValue, setValue];
 }
 
-const initialUniversities = ["ĐH Quốc gia TP.HCM", "ĐH Bách Khoa", "ĐH Kinh tế Quốc dân", "ĐH Ngoại thương"];
-
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'favorites' | 'admin'
+  const [activeTab, setActiveTab] = useState('home');
   const [radarMode, setRadarMode] = useState(false);
   const [favorites, setFavorites] = useLocalStorage('localuni_favorites', []);
-  const [allPlaces, setAllPlaces] = useLocalStorage('localuni_places', initialPlaces);
-  const [universities, setUniversities] = useLocalStorage('localuni_universities', initialUniversities);
+
+  const [allPlaces, setAllPlaces] = useState([]);
+  const [universities, setUniversities] = useState([]);
 
   const [selectedPlace, setSelectedPlace] = useState(null);
 
   // Auth state
   const [user, setUser] = useLocalStorage('localuni_user', null);
   const [showLogin, setShowLogin] = useState(false);
+
+  useEffect(() => {
+    const unsubPlaces = onSnapshot(collection(db, "places"), (snapshot) => {
+      const placesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setAllPlaces(placesData);
+    });
+
+    const unsubUnis = onSnapshot(collection(db, "universities"), (snapshot) => {
+      const unisData = snapshot.docs.map(doc => doc.data().name);
+      setUniversities(unisData);
+    });
+
+    return () => {
+      unsubPlaces();
+      unsubUnis();
+    };
+  }, []);
 
   const toggleFavorite = (id) => {
     if (favorites.includes(id)) {
@@ -117,9 +134,7 @@ export default function App() {
         {!radarMode && activeTab === 'admin' && user?.role === 'admin' && (
           <AdminPanel
             universities={universities}
-            setUniversities={setUniversities}
             allPlaces={allPlaces}
-            setAllPlaces={setAllPlaces}
           />
         )}
 

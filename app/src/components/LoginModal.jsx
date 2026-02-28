@@ -1,20 +1,42 @@
 import React, { useState } from 'react';
+import { auth, googleProvider } from '../firebase';
+import { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 
 export default function LoginModal({ onClose, onLogin }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isRegister, setIsRegister] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onLogin(email);
+
+        // Admin direct login bypass
+        if (email === 'admin@localuni.com' && password === 'admin@localuni.password') {
+            onLogin(email);
+            return;
+        }
+
+        setLoading(true);
+        try {
+            if (isRegister) {
+                await createUserWithEmailAndPassword(auth, email, password);
+            } else {
+                await signInWithEmailAndPassword(auth, email, password);
+            }
+            onLogin(email);
+        } catch (error) {
+            alert("Lỗi đăng nhập: " + error.message);
+        }
+        setLoading(false);
     };
 
-    const handleGoogleLogin = () => {
-        // Simulate google login prompt
-        const simulatedEmail = prompt("Nhập email Google của bạn (thử admin@localuni.com để vào Admin):", "user@gmail.com");
-        if (simulatedEmail) {
-            onLogin(simulatedEmail);
+    const handleGoogleLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            onLogin(result.user.email);
+        } catch (error) {
+            alert("Lỗi đăng nhập Google: " + error.message);
         }
     };
 
@@ -61,7 +83,7 @@ export default function LoginModal({ onClose, onLogin }) {
                             required
                         />
                     </div>
-                    <button type="submit" className="w-full bg-primary hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl transition-colors">
+                    <button disabled={loading} type="submit" className="w-full bg-primary hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl transition-colors disabled:opacity-50">
                         {isRegister ? 'Đăng ký' : 'Đăng nhập'}
                     </button>
                 </form>
@@ -74,7 +96,8 @@ export default function LoginModal({ onClose, onLogin }) {
 
                 <button
                     onClick={handleGoogleLogin}
-                    className="mt-6 w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold py-3 px-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm"
+                    disabled={loading}
+                    className="mt-6 w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold py-3 px-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm disabled:opacity-50"
                 >
                     <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" className="w-5 h-5" />
                     Tiếp tục với Google

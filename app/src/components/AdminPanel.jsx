@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { db } from '../firebase';
+import { doc, setDoc, deleteDoc } from 'firebase/firestore';
 
-export default function AdminPanel({ universities, setUniversities, allPlaces, setAllPlaces }) {
+export default function AdminPanel({ universities, allPlaces }) {
     const [activeTab, setActiveTab] = useState('places_form');
     const [newUni, setNewUni] = useState('');
 
@@ -29,24 +31,36 @@ export default function AdminPanel({ universities, setUniversities, allPlaces, s
     const [phone, setPhone] = useState('');
     const [mapsLink, setMapsLink] = useState('');
     const [attributes, setAttributes] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     // --- Universities ---
-    const handleAddUni = (e) => {
+    const handleAddUni = async (e) => {
         e.preventDefault();
-        if (newUni.trim() && !universities.includes(newUni.trim())) {
-            setUniversities([...universities, newUni.trim()]);
-            setNewUni('');
+        const uniName = newUni.trim();
+        if (uniName && !universities.includes(uniName)) {
+            try {
+                await setDoc(doc(db, "universities", uniName), { name: uniName });
+                setNewUni('');
+            } catch (error) {
+                alert("Lỗi thêm trường: " + error.message);
+            }
         }
     };
 
-    const handleDeleteUni = (uni) => {
-        setUniversities(universities.filter(u => u !== uni));
+    const handleDeleteUni = async (uni) => {
+        if (window.confirm("Xóa trường đại học này?")) {
+            try {
+                await deleteDoc(doc(db, "universities", uni));
+            } catch (error) {
+                alert("Lỗi xóa trường: " + error.message);
+            }
+        }
     };
 
     // --- Media ---
     const handleImageUpload = (e) => {
         const files = Array.from(e.target.files);
-        const newImages = files.map(file => URL.createObjectURL(file));
+        const newImages = files.map(file => URL.createObjectURL(file)); // In real app, upload to Storage
         setImages(prev => [...prev, ...newImages]);
     };
 
@@ -81,15 +95,17 @@ export default function AdminPanel({ universities, setUniversities, allPlaces, s
     };
 
     // --- Submitting Form ---
-    const handleSubmitPlace = (e) => {
+    const handleSubmitPlace = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         let categoryIcon = 'restaurant';
         if (type === 'Dịch vụ') categoryIcon = 'home_repair_service';
         if (type === 'Phòng trọ') categoryIcon = 'bed';
 
+        const placeId = editingId || Date.now().toString();
+
         const placeData = {
-            id: editingId || Date.now(),
             name,
             type,
             categoryIcon,
@@ -109,15 +125,18 @@ export default function AdminPanel({ universities, setUniversities, allPlaces, s
             attributes: attributes.length > 0 ? attributes : null
         };
 
-        if (editingId) {
-            setAllPlaces(allPlaces.map(p => p.id === editingId ? placeData : p));
-            alert("Cập nhật thông tin thành công!");
-            setActiveTab('manage_places');
-        } else {
-            setAllPlaces([placeData, ...allPlaces]);
-            alert("Thêm địa điểm thành công!");
-            resetForm();
+        try {
+            await setDoc(doc(db, "places", placeId), placeData);
+            alert(editingId ? "Cập nhật thông tin thành công!" : "Thêm địa điểm thành công!");
+            if (editingId) {
+                setActiveTab('manage_places');
+            } else {
+                resetForm();
+            }
+        } catch (error) {
+            alert("Lỗi lưu dữ liệu: " + error.message);
         }
+        setLoading(false);
     };
 
     const resetForm = () => {
@@ -161,9 +180,13 @@ export default function AdminPanel({ universities, setUniversities, allPlaces, s
         setActiveTab('places_form');
     };
 
-    const deletePlace = (id) => {
+    const deletePlace = async (id) => {
         if (window.confirm("Bạn có chắc chắn muốn xóa địa điểm này không? Hành động không thể hoàn tác.")) {
-            setAllPlaces(allPlaces.filter(p => p.id !== id));
+            try {
+                await deleteDoc(doc(db, "places", id));
+            } catch (error) {
+                alert("Lỗi xóa địa điểm: " + error.message);
+            }
         }
     };
 
@@ -446,7 +469,7 @@ export default function AdminPanel({ universities, setUniversities, allPlaces, s
                             </div>
                         </div>
 
-                        <button type="submit" className="w-full bg-primary hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-xl transition-colors text-lg shadow-lg shadow-primary/30 flex justify-center items-center gap-2">
+                        <button disabled={loading} type="submit" className="w-full bg-primary hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-xl transition-colors text-lg shadow-lg shadow-primary/30 flex justify-center items-center gap-2 disabled:opacity-50">
                             <span className="material-symbols-outlined">{editingId ? 'save' : 'publish'}</span>
                             {editingId ? 'Lưu Thông Tin Mới' : 'Đăng Tải Địa Điểm'}
                         </button>
