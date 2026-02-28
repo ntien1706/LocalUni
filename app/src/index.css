@@ -55,7 +55,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(74, 222, 128, 0) 0%, rgba(74, 222, 128, 0) 270deg, rgba(74, 222, 128, 0.2) 340deg, rgba(74, 222, 128, 1) 360deg);
+  background: conic-gradient(from 0deg, rgba(21, 128, 61, 0) 0%, rgba(21, 128, 61, 0) 270deg, rgba(21, 128, 61, 0.3) 340deg, rgba(21, 128, 61, 1) 360deg);
   pointer-events: none;
   z-index: 99;
   animation: radar-sweep-anim 4s linear infinite;

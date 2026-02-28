@@ -128,21 +128,9 @@ export default function RadarView({ places, setSelectedPlace, setRadarMode }) {
             const mapOptions = {
                 center: radarCenter,
                 zoom: 13,
-                mapId: 'RADAR_DEMO_MAP_ID_1',
+                mapId: 'DEMO_MAP_ID',
                 disableDefaultUI: true,
                 gestureHandling: "greedy",
-                styles: [
-                    { elementType: "geometry", stylers: [{ color: "#061021" }] },
-                    { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-                    { elementType: "labels.text.fill", stylers: [{ color: "#2d4b46" }] },
-                    { elementType: "labels.text.stroke", stylers: [{ color: "#061021" }] },
-                    { featureType: "administrative", elementType: "geometry.stroke", stylers: [{ color: "#16343f" }] },
-                    { featureType: "landscape.man_made", elementType: "geometry.stroke", stylers: [{ color: "#132837" }] },
-                    { featureType: "landscape.natural", elementType: "geometry", stylers: [{ color: "#040b17" }] },
-                    { featureType: "road", elementType: "geometry", stylers: [{ color: "#0e1e35" }] },
-                    { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#163544" }] },
-                    { featureType: "water", elementType: "geometry", stylers: [{ color: "#020712" }] },
-                ]
             };
             mapInstance.current = new window.google.maps.Map(mapRef.current, mapOptions);
         } else {
@@ -232,7 +220,7 @@ export default function RadarView({ places, setSelectedPlace, setRadarMode }) {
 
                         <div className="relative w-full aspect-square max-w-[600px] md:max-w-[700px] lg:max-w-[800px] mx-auto rounded-full overflow-hidden border-4 border-slate-800 shadow-[0_0_80px_rgba(0,255,128,0.1)] bg-slate-900 pointer-events-auto transform-gpu">
                             {/* The Map itself */}
-                            <div id="radar-map" className="w-full h-[150%] top-1/2 -translate-y-1/2 absolute inset-0 mix-blend-screen mix-blend-lighten z-0" ref={mapRef}></div>
+                            <div id="radar-map" className="w-full h-[150%] top-1/2 -translate-y-1/2 absolute inset-0 z-0" ref={mapRef}></div>
 
                             {/* Sweeping Conic Gradient */}
                             <div className="radar-sweep"></div>
